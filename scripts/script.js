@@ -8,6 +8,12 @@ var hash = CryptoJS.MD5(ts + privateKey + pulicKey).toString();
 
 var searchDiaplay = document.getElementsByClassName("searchContainer");
 
+// add favourites
+function addFavourites(element) {
+  favoritesList.push(element);
+  console.log(favoritesList);
+}
+
 // update the search result
 async function updateSearchResult(searchName) {
   const response = await fetch(
@@ -83,12 +89,6 @@ searchBtn.addEventListener("click", () => {
   }
 });
 
-// add favourites
-function addFavourites(element) {
-  favoritesList.push(element);
-  console.log(favoritesList);
-}
-
 // HomePage
 var homePage = document.getElementById("HomePage");
 homePage.addEventListener("click", () => {
@@ -100,24 +100,22 @@ homePage.addEventListener("click", () => {
   var ul = document.getElementById("searchResultListContainer");
   ul.innerHTML = "";
   // to remove infoPage
-  var secInfo = document.getElementsByClassName("infoSectionCumContainer");
-  if (secInfo.length !== 0) {
-    secInfo[0].remove();
-  }
+
+  var secInfoDiv = document.getElementById("main");
+  main && (main.innerHTML = "");
 });
 
 // favorite page
 var favoritesPage = document.getElementById("favPage");
-favoritesPage.addEventListener("click", displayFavorites);
+favoritesPage.addEventListener("click", () => {
+  displayFavorites();
+});
 favoritesPage.addEventListener("click", () => {
   searchDiaplay[0].style.display = "none";
-
   // to remove infoPage
-  var secInfo = document.getElementsByClassName("infoSectionCumContainer");
-  if (secInfo.length !== 0) {
-    // console.log("secinfoLen: ", secInfo);
-    secInfo[0].remove();
-  }
+
+  var secInfoDiv = document.getElementById("main");
+  main && (main.innerHTML = "");
 });
 
 // favorites page function
@@ -177,7 +175,8 @@ function infoContainer(element) {
     section[i].style.display = "none";
   }
 
-  var main = document.getElementsByTagName("main");
+  var main = document.getElementById("main");
+  main.innerHTML = "";
   infoSection = document.createElement("section");
   infoSection.className = "infoSectionCumContainer";
 
@@ -202,13 +201,12 @@ function infoContainer(element) {
           </div>
         </div>
         
-        <div class="infoFavoriteBtn"><button id="infoPage-${element.id}" >${btnUse} lhlkblblb</button></div>
+        <div class="infoFavoriteBtn"><button id="infoPage-${element.id}" >${btnUse}</button></div>
         </div>
         `;
-  main[0].appendChild(infoSection);
+  main.appendChild(infoSection);
   // favorite button action
   var infoBtn = document.getElementById(`infoPage-${element.id}`);
-
   infoBtn.addEventListener("click", () => {
     // console.log("info btn clicked");
     if (btnUse === "addFavourites") {
